@@ -28,6 +28,7 @@ const char* nbt_type_to_string(nbt_type t)
         DEF_CASE(TAG_LIST);
         DEF_CASE(TAG_COMPOUND);
         DEF_CASE(TAG_INT_ARRAY);
+        DEF_CASE(TAG_LONG_ARRAY);
     default:
         return "TAG_UNKNOWN";
     }
@@ -111,6 +112,11 @@ bool nbt_eq(const nbt_node* restrict a, const nbt_node* restrict b)
         return memcmp(a->payload.tag_int_array.data,
                       b->payload.tag_int_array.data,
                       a->payload.tag_int_array.length) == 0;
+    case TAG_LONG_ARRAY:
+        if(a->payload.tag_long_array.length != b->payload.tag_long_array.length) return false;
+            return memcmp(a->payload.tag_long_array.data,
+                          b->payload.tag_long_array.data,
+                          a->payload.tag_long_array.length) == 0;
     case TAG_STRING:
         return strcmp(a->payload.tag_string, b->payload.tag_string) == 0;
     case TAG_LIST:

@@ -223,6 +223,34 @@ parse_error:
     return ret;
 }
 
+static struct nbt_long_array read_long_array(const char** memory, size_t* length) {
+    struct nbt_long_array ret;
+    ret.data = NULL;
+
+    READ_GENERIC(&ret.length, sizeof ret.length, swapped_memscan, goto parse_error);
+
+    if(ret.length < 0) goto parse_error;
+
+    CHECKED_MALLOC(ret.data, ret.length * sizeof(int64_t), goto parse_error);
+
+    READ_GENERIC(ret.data, (size_t)ret.length * sizeof(int64_t), memscan, goto parse_error);
+
+
+    // Byteswap the whole array.
+    for(int32_t i = 0; i < ret.length; i++)
+        be2ne(ret.data + i, sizeof(int64_t));
+
+    return ret;
+
+    parse_error:
+    if(errno == NBT_OK)
+        errno = NBT_ERR;
+
+    free(ret.data);
+    ret.data = NULL;
+    return ret;
+}
+
 /*
  * Is the list all one type? If yes, return the type. Otherwise, return
  * TAG_INVALID
@@ -392,6 +420,9 @@ static nbt_node* parse_unnamed_tag(nbt_type type, char* name, const char** memor
     case TAG_INT_ARRAY:
         node->payload.tag_int_array = read_int_array(memory, length);
         break;
+    case TAG_LONG_ARRAY:
+        node->payload.tag_long_array = read_long_array(memory, length);
+        break;
     case TAG_STRING:
         node->payload.tag_string = read_string(memory, length);
         break;
@@ -515,6 +546,12 @@ static nbt_status __nbt_dump_ascii(const nbt_node* tree, struct buffer* b, size_
         dump_int_array(tree->payload.tag_int_array, b);
         bprintf(b, "\n");
     }
+    else if(tree->type == TAG_LONG_ARRAY)
+    {
+        bprintf(b, "Tag_Long_Array(\"%s\"): ", SAFE_NAME(tree));
+        dump_int_array(tree->payload.tag_int_array, b);
+        bprintf(b, "\n");
+    }
     else if(tree->type == TAG_STRING)
     {
         if(tree->payload.tag_string == NULL)
@@ -609,6 +646,26 @@ static nbt_status dump_int_array_binary(const struct nbt_int_array ia, struct bu
     for(int32_t i = 0; i < ia.length; i++)
     {
         int32_t swappedElem = ia.data[i];
+        ne2be(&swappedElem, sizeof(swappedElem));
+        CHECKED_APPEND(b, &swappedElem, sizeof(swappedElem));
+    }
+
+    return NBT_OK;
+}
+
+static nbt_status dump_long_array_binary(const struct nbt_long_array ia, struct buffer* b)
+{
+    int32_t dumped_length = ia.length;
+
+    ne2be(&dumped_length, sizeof dumped_length);
+
+    CHECKED_APPEND(b, &dumped_length, sizeof dumped_length);
+
+    if(ia.length) assert(ia.data);
+
+    for(int32_t i = 0; i < ia.length; i++)
+    {
+        int64_t swappedElem = ia.data[i];
         ne2be(&swappedElem, sizeof(swappedElem));
         CHECKED_APPEND(b, &swappedElem, sizeof(swappedElem));
     }
@@ -741,6 +798,8 @@ static nbt_status __dump_binary(const nbt_node* tree, bool dump_type, struct buf
         return dump_byte_array_binary(tree->payload.tag_byte_array, b);
     else if(tree->type == TAG_INT_ARRAY)
         return dump_int_array_binary(tree->payload.tag_int_array, b);
+    else if(tree->type == TAG_LONG_ARRAY)
+        return dump_long_array_binary(tree->payload.tag_long_array, b);
     else if(tree->type == TAG_STRING)
         return dump_string_binary(tree->payload.tag_string, b);
     else if(tree->type == TAG_LIST)
