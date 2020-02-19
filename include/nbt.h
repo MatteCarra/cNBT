@@ -181,7 +181,7 @@ struct buffer nbt_dump_compressed(const nbt_node* tree,
  * occurs, NULL will be returned, and errno will be set to the appropriate
  * nbt_status. Please check your damn pointers.
  */
-nbt_node* nbt_parse(const void* memory, size_t length);
+nbt_node* nbt_parse(const void* memory, size_t* length);
 
 /*
  * Returns a NULL-terminated string as the ascii representation of the tree. If

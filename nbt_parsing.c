@@ -451,12 +451,11 @@ parse_error:
     return NULL;
 }
 
-nbt_node* nbt_parse(const void* mem, size_t len)
+nbt_node* nbt_parse(const void* mem, size_t* length)
 {
     errno = NBT_OK;
 
     const char** memory = (const char**)&mem;
-    size_t* length = &len;
 
     return parse_named_tag(memory, length);
 }
