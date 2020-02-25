@@ -14,7 +14,7 @@
 #include <stddef.h>
 #include <string.h>
 
-#ifdef __GNUC__
+#if defined(__GNUC__) || defined(__clang__)
 #define likely(x)   __builtin_expect(!!(x), 1)
 #define unlikely(x) __builtin_expect(  (x), 0)
 #else

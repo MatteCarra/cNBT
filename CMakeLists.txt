@@ -13,16 +13,16 @@ IF (CMAKE_COMPILER_IS_GNUCXX)
   set(CMAKE_C_FLAGS_RELEASE "-march=native -O3 -s -DNDEBUG")
 ENDIF()
 
-# Output paths
-set(EXECUTABLE_OUTPUT_PATH bin)
-
-find_program(BASH_PROGRAM bash)
-
-include_directories(include)
-
 ADD_LIBRARY(nbt buffer.c
   nbt_loading.c
   nbt_parsing.c
   nbt_treeops.c
   nbt_util.c
 )
+
+target_include_directories(nbt
+        PUBLIC
+          $<INSTALL_INTERFACE:include>
+          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+
