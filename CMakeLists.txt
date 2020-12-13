@@ -20,6 +20,10 @@ ADD_LIBRARY(nbt buffer.c
   nbt_util.c
 )
 
+target_link_libraries(nbt
+    z
+)
+
 target_include_directories(nbt
         PUBLIC
           $<INSTALL_INTERFACE:include>
