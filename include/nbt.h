@@ -58,6 +58,11 @@ typedef enum {
 
 struct nbt_node;
 
+struct nbt_list {
+    struct nbt_node* data; /* A single node's data. */
+    struct list_head entry;
+};
+
 /*
  * Represents a single node in the tree. You should switch on `type' and ONLY
  * access the union member it signifies. tag_compound and tag_list contain
@@ -107,10 +112,7 @@ typedef struct nbt_node {
          * For more information on using the linked list, see `list.h'. The API
          * is well documented.
          */
-        struct nbt_list {
-            struct nbt_node* data; /* A single node's data. */
-            struct list_head entry;
-        } * tag_list,
+        struct nbt_list * tag_list,
           * tag_compound;
 
         /*
