@@ -26,19 +26,3 @@ ADD_LIBRARY(nbt buffer.c
   nbt_treeops.c
   nbt_util.c
 )
-
-if(CNBT_BUILD_EXAMPLES)
-  ADD_EXECUTABLE(check check.c)
-  ADD_EXECUTABLE(afl_check afl_check.c)
-  ADD_EXECUTABLE(nbtreader main.c)
-  TARGET_LINK_LIBRARIES(check nbt z)
-  TARGET_LINK_LIBRARIES(afl_check nbt z)
-  TARGET_LINK_LIBRARIES(nbtreader nbt z)
-  
-  include(CTest)
-  ADD_TEST(test_hello_world ${EXECUTABLE_OUTPUT_PATH}/check ${CMAKE_CURRENT_SOURCE_DIR}/testdata/hello_world.nbt)
-  ADD_TEST(test_simple_level ${EXECUTABLE_OUTPUT_PATH}/check ${CMAKE_CURRENT_SOURCE_DIR}/testdata/simple_level.nbt)
-  ADD_TEST(test_issue_13 ${EXECUTABLE_OUTPUT_PATH}/check ${CMAKE_CURRENT_SOURCE_DIR}/testdata/issue_13.nbt)
-  ADD_TEST(test_issue_18 ${EXECUTABLE_OUTPUT_PATH}/check ${CMAKE_CURRENT_SOURCE_DIR}/testdata/issue_18.nbt)
-  ADD_TEST(test_afl ${CMAKE_CURRENT_SOURCE_DIR}/afl_check.sh ${EXECUTABLE_OUTPUT_PATH}/afl_check)  
-endif()

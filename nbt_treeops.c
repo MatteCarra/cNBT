@@ -7,7 +7,7 @@
  * it, you can buy us a beer in return.
  * -----------------------------------------------------------------------------
  */
-#include "nbt.h"
+#include "include/nbt.h"
 
 #include <assert.h>
 #include <errno.h>
