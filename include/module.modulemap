@@ -1,0 +1,4 @@
+module NBT {
+    umbrella header "nbt.h"
+    export *
+}
