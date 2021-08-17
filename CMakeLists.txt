@@ -15,11 +15,6 @@ IF (CMAKE_COMPILER_IS_GNUCXX)
   set(CMAKE_C_FLAGS_RELEASE "-march=native -O3 -s -DNDEBUG")
 ENDIF()
 
-# Output paths
-set(EXECUTABLE_OUTPUT_PATH bin)
-
-find_program(BASH_PROGRAM bash)
-
 ADD_LIBRARY(nbt buffer.c
   nbt_loading.c
   nbt_parsing.c
