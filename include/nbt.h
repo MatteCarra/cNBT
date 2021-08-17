@@ -65,6 +65,27 @@ struct nbt_node;
  * recommended being VERY comfortable with recursion before traversing this
  * beast, or at least sticking to the library routines provided.
  */
+
+struct nbt_list {
+    struct nbt_node* data; /* A single node's data. */
+    struct list_head entry;
+};
+
+struct nbt_long_array {
+    int64_t* data;
+    int32_t length;
+};
+
+struct nbt_int_array {
+    int32_t* data;
+    int32_t length;
+};
+
+struct nbt_byte_array {
+    unsigned char* data;
+    int32_t length;
+};
+
 typedef struct nbt_node {
     nbt_type type;
     char* name; /* This may be NULL. Check your damn pointers. */
@@ -79,20 +100,11 @@ typedef struct nbt_node {
         float   tag_float;
         double  tag_double;
 
-        struct nbt_byte_array {
-            unsigned char* data;
-            int32_t length;
-        } tag_byte_array;
+        struct nbt_byte_array tag_byte_array;
 
-        struct nbt_int_array {
-            int32_t* data;
-            int32_t length;
-        } tag_int_array;
+        struct nbt_int_array tag_int_array;
 
-        struct nbt_long_array {
-            int64_t* data;
-            int32_t length;
-        } tag_long_array;
+        struct nbt_long_array tag_long_array;
 
         char* tag_string; /* TODO: technically, this should be a UTF-8 string */
 
@@ -107,10 +119,7 @@ typedef struct nbt_node {
          * For more information on using the linked list, see `list.h'. The API
          * is well documented.
          */
-        struct nbt_list {
-            struct nbt_node* data; /* A single node's data. */
-            struct list_head entry;
-        } * tag_list,
+        struct nbt_list* tag_list,
           * tag_compound;
 
         /*

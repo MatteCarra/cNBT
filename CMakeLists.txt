@@ -2,8 +2,6 @@ project(cnbt)
 
 cmake_minimum_required(VERSION 2.6)
 
-option(CNBT_BUILD_EXAMPLES "Build cNBT examples and tests" ON)
-
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Debug)
 endif()
@@ -16,8 +14,14 @@ IF (CMAKE_COMPILER_IS_GNUCXX)
 ENDIF()
 
 ADD_LIBRARY(nbt buffer.c
-  nbt_loading.c
-  nbt_parsing.c
-  nbt_treeops.c
-  nbt_util.c
-)
+        nbt_loading.c
+        nbt_parsing.c
+        nbt_treeops.c
+        nbt_util.c
+        )
+
+target_include_directories(nbt
+        PUBLIC
+        $<INSTALL_INTERFACE:include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        )
