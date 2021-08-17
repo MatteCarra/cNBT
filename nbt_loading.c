@@ -258,7 +258,8 @@ nbt_node* nbt_parse_compressed(const void* chunk_start, size_t length)
     if(decompressed.data == NULL)
         return NULL;
 
-    nbt_node* ret = nbt_parse(decompressed.data, decompressed.len);
+    size_t len = decompressed.len;
+    nbt_node* ret = nbt_parse(decompressed.data, &len);
 
     buffer_free(&decompressed);
     return ret;
