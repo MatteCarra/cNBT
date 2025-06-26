@@ -1,3 +1,0 @@
-/home/matteo/Workspace/C++/cNBT/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/matteo/Workspace/C++/cNBT/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/matteo/Workspace/C++/cNBT/cmake-build-debug/CMakeFiles/nbt.dir

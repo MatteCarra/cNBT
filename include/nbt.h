@@ -10,10 +10,6 @@
 #ifndef NBT_H
 #define NBT_H
 
-#ifdef __cplusplus
-#define restrict __restrict__
-extern "C" {
-#endif
 
 #include <stdbool.h>
 #include <stddef.h> /* for size_t */
@@ -22,6 +18,12 @@ extern "C" {
 
 #include "../buffer.h" /* for struct buffer */
 #include "list.h"   /* For struct list_entry etc. */
+
+
+#ifdef __cplusplus
+#define restrict __restrict__
+extern "C" {
+#endif
 
 typedef enum {
     NBT_OK   =  0, /* No error. */

@@ -17,8 +17,8 @@ struct list_head {
 
 /* Adds a new element to the beginning of a list. Returns the head of the list
  * so that calls may be chained. */
-static inline struct list_head* list_add_head(struct list_head* restrict new_element,
-                                              struct list_head* restrict head)
+static inline struct list_head* list_add_head(struct list_head* new_element,
+                                              struct list_head* head)
 {
     new_element->flink = head->flink;
     new_element->blink = head;
@@ -31,8 +31,8 @@ static inline struct list_head* list_add_head(struct list_head* restrict new_ele
 
 /* Adds a new element to the end of a list. Returns the head of the list so that
  * calls may be chained. */
-static inline struct list_head* list_add_tail(struct list_head* restrict new_element,
-                                              struct list_head* restrict head)
+static inline struct list_head* list_add_tail(struct list_head* new_element,
+                                              struct list_head* head)
 {
     new_element->flink = head;
     new_element->blink = head->blink;

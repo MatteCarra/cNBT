@@ -23,6 +23,10 @@ struct buffer {
     size_t cap;          /* Internal use. The allocated size of the buffer. */
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  * Initialize a buffer with this macro.
  *
@@ -55,4 +59,7 @@ int buffer_reserve(struct buffer* b, size_t reserved_amount);
  */
 int buffer_append(struct buffer* b, const void* data, size_t n);
 
+#ifdef __cplusplus
+}
+#endif
 #endif
